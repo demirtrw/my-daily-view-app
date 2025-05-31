@@ -9,39 +9,30 @@ const MainMenu = () => {
   const { toast } = useToast();
 
   const handleMailsClick = async () => {
-    try {
-      console.log("Sending request to webhook...");
-      
-      const response = await fetch("https://demirkrts12.app.n8n.cloud/webhook/demir24app", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          action: "check_mails",
-          timestamp: new Date().toISOString(),
-          user: "mobile_app_user"
-        }),
-      });
+  try {
+    console.log("Sending GET request to webhook...");
 
-      console.log("Webhook response:", response.status);
-      
-      toast({
-        title: "Request Sent",
-        description: "Mail check request sent successfully",
-      });
-      
-      // Navigate to mails page after sending the request
-      navigate("/mails");
-    } catch (error) {
-      console.error("Error sending webhook request:", error);
-      toast({
-        title: "Error",
-        description: "Failed to send request to webhook",
-        variant: "destructive",
-      });
-    }
-  };
+    const response = await fetch("https://demirkrts12.app.n8n.cloud/webhook/demir24app", {
+      method: "GET",
+    });
+
+    console.log("Webhook response:", response.status);
+
+    toast({
+      title: "Request Sent",
+      description: "Mail check request sent successfully",
+    });
+
+    navigate("/mails");
+  } catch (error) {
+    console.error("Error sending webhook request:", error);
+    toast({
+      title: "Error",
+      description: "Failed to send request to webhook",
+      variant: "destructive",
+    });
+  }
+};
 
   const menuItems = [
     {
