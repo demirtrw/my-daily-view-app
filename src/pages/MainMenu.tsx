@@ -12,7 +12,7 @@ const MainMenu = () => {
     try {
       console.log("Sending request to webhook...");
       
-      const response = await fetch("https://demirkrts12.app.n8n.cloud/webhook-test/demir24app", {
+      const response = await fetch("https://demirkrts12.app.n8n.cloud/webhook/demir24app", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
