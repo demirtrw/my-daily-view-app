@@ -136,6 +136,68 @@ const DailyRoutine = () => {
                 </div>
               </CardContent>
             </Card>
+
+      import { useState } from "react"; import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogClose, } from "@/components/ui/dialog"; import { Input } from "@/components/ui/input"; import { Textarea } from "@/components/ui/textarea"; import { Button } from "@/components/ui/button"; import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"; import { CalendarIcon, Clock } from "lucide-react"; import { format } from "date-fns"; import { Calendar } from "@/components/ui/calendar"; import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+
+export default function AddRoutineModal() { const [date, setDate] = useState<Date | undefined>(new Date()); const [time, setTime] = useState(""); const [category, setCategory] = useState("Work");
+
+const handleSubmit = () => { const routineData = { title: (document.getElementById("title") as HTMLInputElement).value, description: (document.getElementById("description") as HTMLTextAreaElement).value, location: (document.getElementById("location") as HTMLInputElement).value, date: date?.toISOString().split("T")[0], time, category, }; console.log("Routine Data:", routineData); // Hook this to n8n when ready };
+
+return ( <Dialog> <DialogTrigger asChild> <Button className="w-full bg-gradient-to-r from-pink-300 to-purple-300 text-white shadow-lg"> Add Routine </Button> </DialogTrigger> <DialogContent className="rounded-2xl shadow-2xl bg-pink-50 px-4 py-6"> <DialogHeader> <DialogTitle className="text-center text-lg font-bold text-gray-700"> Add New Routine </DialogTitle> </DialogHeader>
+
+<div className="space-y-4">
+      <Input id="title" placeholder="Title" required className="bg-white" />
+      <Textarea id="description" placeholder="Description (optional)" className="bg-white" />
+
+      <Select value={category} onValueChange={setCategory}>
+        <SelectTrigger className="bg-white">
+          <SelectValue placeholder="Select category" />
+        </SelectTrigger>
+        <SelectContent>
+          <SelectItem value="Work">Work</SelectItem>
+          <SelectItem value="Personal">Personal</SelectItem>
+          <SelectItem value="Important">Important</SelectItem>
+        </SelectContent>
+      </Select>
+
+      <Popover>
+        <PopoverTrigger asChild>
+          <Button variant="outline" className="w-full justify-start text-left font-normal bg-white">
+            <CalendarIcon className="mr-2 h-4 w-4" />
+            {date ? format(date, "PPP") : <span>Pick a date</span>}
+          </Button>
+        </PopoverTrigger>
+        <PopoverContent className="w-auto p-0 bg-white">
+          <Calendar mode="single" selected={date} onSelect={setDate} initialFocus />
+        </PopoverContent>
+      </Popover>
+
+      <div className="flex items-center space-x-2">
+        <Clock className="h-5 w-5 text-gray-500" />
+        <Input
+          type="time"
+          value={time}
+          onChange={(e) => setTime(e.target.value)}
+          className="bg-white"
+        />
+      </div>
+
+      <Input id="location" placeholder="Location (optional)" className="bg-white" />
+
+      <Button onClick={handleSubmit} className="w-full bg-gradient-to-r from-purple-400 to-pink-400 text-white">
+        Submit
+      </Button>
+    </div>
+
+    <DialogClose className="absolute top-4 right-4 text-gray-400 hover:text-gray-600">
+      ×
+    </DialogClose>
+  </DialogContent>
+</Dialog>
+
+); }
+
+
           ))}
         </div>
       </div>
