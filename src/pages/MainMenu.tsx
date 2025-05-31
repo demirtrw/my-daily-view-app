@@ -2,9 +2,46 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { CreditCard, Calendar, Mail, MessageSquare } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { useToast } from "@/hooks/use-toast";
 
 const MainMenu = () => {
   const navigate = useNavigate();
+  const { toast } = useToast();
+
+  const handleMailsClick = async () => {
+    try {
+      console.log("Sending request to webhook...");
+      
+      const response = await fetch("https://demirkrts12.app.n8n.cloud/webhook-test/demir24app", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          action: "check_mails",
+          timestamp: new Date().toISOString(),
+          user: "mobile_app_user"
+        }),
+      });
+
+      console.log("Webhook response:", response.status);
+      
+      toast({
+        title: "Request Sent",
+        description: "Mail check request sent successfully",
+      });
+      
+      // Navigate to mails page after sending the request
+      navigate("/mails");
+    } catch (error) {
+      console.error("Error sending webhook request:", error);
+      toast({
+        title: "Error",
+        description: "Failed to send request to webhook",
+        variant: "destructive",
+      });
+    }
+  };
 
   const menuItems = [
     {
@@ -14,6 +51,7 @@ const MainMenu = () => {
       route: "/balance",
       gradient: "from-green-400 to-emerald-500",
       bgColor: "bg-green-50",
+      onClick: () => navigate("/balance"),
     },
     {
       title: "Check My Daily Routine",
@@ -22,6 +60,7 @@ const MainMenu = () => {
       route: "/daily-routine",
       gradient: "from-blue-400 to-cyan-500",
       bgColor: "bg-blue-50",
+      onClick: () => navigate("/daily-routine"),
     },
     {
       title: "Check Mails",
@@ -30,6 +69,7 @@ const MainMenu = () => {
       route: "/mails",
       gradient: "from-purple-400 to-pink-500",
       bgColor: "bg-purple-50",
+      onClick: handleMailsClick,
     },
     {
       title: "WhatsApp Business",
@@ -38,6 +78,7 @@ const MainMenu = () => {
       route: "/whatsapp",
       gradient: "from-emerald-400 to-teal-500",
       bgColor: "bg-emerald-50",
+      onClick: () => navigate("/whatsapp"),
     },
   ];
 
@@ -54,7 +95,7 @@ const MainMenu = () => {
             <Card
               key={index}
               className="cursor-pointer transform transition-all duration-200 hover:scale-105 hover:shadow-xl border-0 shadow-lg"
-              onClick={() => navigate(item.route)}
+              onClick={item.onClick}
             >
               <CardContent className={`p-6 ${item.bgColor}`}>
                 <div className="flex items-center space-x-4">
