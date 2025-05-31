@@ -65,7 +65,242 @@ return ( <div className="min-h-screen bg-gradient-to-br from-blue-50 to-cyan-100
             </div>
           </CardContent>
         </Card>
-      ))}
+      "use client"
+
+import type React from "react"
+
+import { useState } from "react"
+import { CalendarIcon, Clock, MapPin, X } from "lucide-react"
+import { format } from "date-fns"
+
+import { Button } from "@/components/ui/button"
+import { Calendar } from "@/components/ui/calendar"
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
+import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { Textarea } from "@/components/ui/textarea"
+import { cn } from "@/lib/utils"
+
+interface RoutineFormData {
+  title: string
+  description: string
+  category: string
+  date: Date | undefined
+  time: string
+  location: string
+}
+
+export default function AddRoutineModal() {
+  const [open, setOpen] = useState(false)
+  const [formData, setFormData] = useState<RoutineFormData>({
+    title: "",
+    description: "",
+    category: "",
+    date: undefined,
+    time: "",
+    location: "",
+  })
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
+
+    // Prepare data for n8n webhook
+    const routineData = {
+      ...formData,
+      date: formData.date?.toISOString(),
+      timestamp: new Date().toISOString(),
+    }
+
+    console.log("Routine data:", routineData)
+
+    // TODO: Send to n8n webhook
+    // await fetch('YOUR_N8N_WEBHOOK_URL', {
+    //   method: 'POST',
+    //   headers: { 'Content-Type': 'application/json' },
+    //   body: JSON.stringify(routineData)
+    // })
+
+    setOpen(false)
+    // Reset form
+    setFormData({
+      title: "",
+      description: "",
+      category: "",
+      date: undefined,
+      time: "",
+      location: "",
+    })
+  }
+
+  const updateFormData = (field: keyof RoutineFormData, value: any) => {
+    setFormData((prev) => ({ ...prev, [field]: value }))
+  }
+
+  return (
+    <Dialog open={open} onOpenChange={setOpen}>
+      <DialogTrigger asChild>
+        <Button
+          size="sm"
+          className="bg-gradient-to-r from-purple-400 to-pink-400 hover:from-purple-500 hover:to-pink-500 text-white font-medium rounded-lg shadow-md hover:shadow-lg transition-all duration-200"
+        >
+          + Add Routine
+        </Button>
+      </DialogTrigger>
+
+      <DialogContent className="sm:max-w-md w-[95vw] max-h-[90vh] overflow-y-auto bg-white/95 backdrop-blur-sm border-0 shadow-2xl rounded-2xl">
+        <DialogHeader className="relative pb-4">
+          <DialogTitle className="text-xl font-semibold text-gray-800 text-center pr-8">Add New Routine</DialogTitle>
+          <Button
+            variant="ghost"
+            size="icon"
+            className="absolute right-0 top-0 h-8 w-8 rounded-full hover:bg-gray-100"
+            onClick={() => setOpen(false)}
+          >
+            <X className="h-4 w-4" />
+          </Button>
+        </DialogHeader>
+
+        <form onSubmit={handleSubmit} className="space-y-5">
+          {/* Title */}
+          <div className="space-y-2">
+            <Label htmlFor="title" className="text-sm font-medium text-gray-700">
+              Title *
+            </Label>
+            <Input
+              id="title"
+              value={formData.title}
+              onChange={(e) => updateFormData("title", e.target.value)}
+              placeholder="Enter routine title"
+              required
+              className="border-gray-200 focus:border-purple-300 focus:ring-purple-200 rounded-lg"
+            />
+          </div>
+
+          {/* Description */}
+          <div className="space-y-2">
+            <Label htmlFor="description" className="text-sm font-medium text-gray-700">
+              Description
+            </Label>
+            <Textarea
+              id="description"
+              value={formData.description}
+              onChange={(e) => updateFormData("description", e.target.value)}
+              placeholder="Add a description (optional)"
+              rows={3}
+              className="border-gray-200 focus:border-purple-300 focus:ring-purple-200 rounded-lg resize-none"
+            />
+          </div>
+
+          {/* Category */}
+          <div className="space-y-2">
+            <Label className="text-sm font-medium text-gray-700">Category *</Label>
+            <Select value={formData.category} onValueChange={(value) => updateFormData("category", value)}>
+              <SelectTrigger className="border-gray-200 focus:border-purple-300 focus:ring-purple-200 rounded-lg">
+                <SelectValue placeholder="Select a category" />
+              </SelectTrigger>
+              <SelectContent className="rounded-lg">
+                <SelectItem value="work" className="rounded-md">
+                  <div className="flex items-center gap-2">
+                    <div className="w-3 h-3 rounded-full bg-blue-400"></div>
+                    Work
+                  </div>
+                </SelectItem>
+                <SelectItem value="personal" className="rounded-md">
+                  <div className="flex items-center gap-2">
+                    <div className="w-3 h-3 rounded-full bg-green-400"></div>
+                    Personal
+                  </div>
+                </SelectItem>
+                <SelectItem value="important" className="rounded-md">
+                  <div className="flex items-center gap-2">
+                    <div className="w-3 h-3 rounded-full bg-red-400"></div>
+                    Important
+                  </div>
+                </SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+
+          {/* Date and Time Row */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            {/* Date */}
+            <div className="space-y-2">
+              <Label className="text-sm font-medium text-gray-700">Date *</Label>
+              <Popover>
+                <PopoverTrigger asChild>
+                  <Button
+                    variant="outline"
+                    className={cn(
+                      "w-full justify-start text-left font-normal border-gray-200 hover:border-purple-300 rounded-lg",
+                      !formData.date && "text-muted-foreground",
+                    )}
+                  >
+                    <CalendarIcon className="mr-2 h-4 w-4" />
+                    {formData.date ? format(formData.date, "PPP") : "Pick a date"}
+                  </Button>
+                </PopoverTrigger>
+                <PopoverContent className="w-auto p-0 rounded-lg" align="start">
+                  <Calendar
+                    mode="single"
+                    selected={formData.date}
+                    onSelect={(date) => updateFormData("date", date)}
+                    initialFocus
+                  />
+                </PopoverContent>
+              </Popover>
+            </div>
+
+            {/* Time */}
+            <div className="space-y-2">
+              <Label htmlFor="time" className="text-sm font-medium text-gray-700">
+                Time *
+              </Label>
+              <div className="relative">
+                <Clock className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
+                <Input
+                  id="time"
+                  type="time"
+                  value={formData.time}
+                  onChange={(e) => updateFormData("time", e.target.value)}
+                  required
+                  className="pl-10 border-gray-200 focus:border-purple-300 focus:ring-purple-200 rounded-lg"
+                />
+              </div>
+            </div>
+          </div>
+
+          {/* Location */}
+          <div className="space-y-2">
+            <Label htmlFor="location" className="text-sm font-medium text-gray-700">
+              Location
+            </Label>
+            <div className="relative">
+              <MapPin className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
+              <Input
+                id="location"
+                value={formData.location}
+                onChange={(e) => updateFormData("location", e.target.value)}
+                placeholder="Add location (optional)"
+                className="pl-10 border-gray-200 focus:border-purple-300 focus:ring-purple-200 rounded-lg"
+              />
+            </div>
+          </div>
+
+          {/* Submit Button */}
+          <Button
+            type="submit"
+            className="w-full bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white font-medium py-3 rounded-xl shadow-lg hover:shadow-xl transition-all duration-200 mt-6"
+            disabled={!formData.title || !formData.category || !formData.date || !formData.time}
+          >
+            Add Routine
+          </Button>
+        </form>
+      </DialogContent>
+    </Dialog>
+  )
+}
     </div>
   </div>
 </div>
