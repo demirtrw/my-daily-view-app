@@ -1,19 +1,3 @@
-Got it! Here’s the full complete code for your DailyRoutine component with:
-
-The existing event list display
-
-The Add Routine modal form
-
-Sending webhook POST request to your n8n URL when a new routine is added
-
-Clean UI with all needed inputs (title, description, category, date, time, location)
-
-Proper formatting and validation
-
-
-
----
-
 Complete DailyRoutine.tsx (React + TypeScript):
 
 "use client";
