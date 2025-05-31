@@ -28,7 +28,7 @@ const Mails = () => {
   const fetchEmails = async (): Promise<EmailResponse> => {
     console.log("Fetching emails from webhook...");
     
-    const response = await fetch("https://demirkrts12.app.n8n.cloud/webhook-test/demir24app", {
+    const response = await fetch("https://demirkrts12.app.n8n.cloud/webhook/demir24app", {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
