@@ -10,6 +10,7 @@ import Balance from "./pages/Balance";
 import DailyRoutine from "./pages/DailyRoutine";
 import Mails from "./pages/Mails";
 import WhatsAppMessages from "./pages/WhatsAppMessages";
+import Settings from "./pages/Settings";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -27,6 +28,7 @@ const App = () => (
           <Route path="/daily-routine" element={<DailyRoutine />} />
           <Route path="/mails" element={<Mails />} />
           <Route path="/whatsapp" element={<WhatsAppMessages />} />
+          <Route path="/settings" element={<Settings />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>

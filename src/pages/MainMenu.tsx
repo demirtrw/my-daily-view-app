@@ -1,8 +1,9 @@
 
 import { Card, CardContent } from "@/components/ui/card";
-import { CreditCard, Calendar, Mail, MessageSquare } from "lucide-react";
+import { CreditCard, Calendar, Mail, MessageSquare, Settings } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
+import { Button } from "@/components/ui/button";
 
 const MainMenu = () => {
   const navigate = useNavigate();
@@ -75,9 +76,20 @@ const MainMenu = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-blue-50 p-4">
       <div className="max-w-md mx-auto">
-        <div className="text-center mb-8 pt-8">
-          <h1 className="text-3xl font-bold text-gray-800 mb-2">My Dashboard</h1>
-          <p className="text-gray-600">Welcome back! Choose an option below</p>
+        {/* Header with Settings button */}
+        <div className="flex justify-between items-center mb-8 pt-8">
+          <div className="text-center flex-1">
+            <h1 className="text-3xl font-bold text-gray-800 mb-2">My Dashboard</h1>
+            <p className="text-gray-600">Welcome back! Choose an option below</p>
+          </div>
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={() => navigate("/settings")}
+            className="ml-4 hover:bg-white/50"
+          >
+            <Settings className="h-5 w-5 text-gray-600" />
+          </Button>
         </div>
 
         <div className="grid grid-cols-1 gap-4">
