@@ -4,30 +4,34 @@ import { CreditCard, Calendar, Mail, MessageSquare } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
 
-const handleMailsClick = () => {
-  console.log("Sending GET request to webhook...");
+const MainMenu = () => {
+  const navigate = useNavigate();
+  const { toast } = useToast();
 
-  // Fire-and-forget: do NOT await it
-  fetch("https://demirkrts12.app.n8n.cloud/webhook/demir24app", {
-    method: "GET",
-  }).then((response) => {
-    console.log("Webhook response:", response.status);
-    toast({
-      title: "Request Sent",
-      description: "Mail check request sent successfully",
-    });
-  }).catch((error) => {
-    console.error("Error sending webhook request:", error);
-    toast({
-      title: "Error",
-      description: "Failed to send request to webhook",
-      variant: "destructive",
-    });
-  });
+  const handleMailsClick = () => {
+    console.log("Sending GET request to webhook...");
 
-  // Navigate immediately for a faster user experience
-  navigate("/mails");
-};
+    // Fire-and-forget: do NOT await it
+    fetch("https://demirkrts12.app.n8n.cloud/webhook/demir24app", {
+      method: "GET",
+    }).then((response) => {
+      console.log("Webhook response:", response.status);
+      toast({
+        title: "Request Sent",
+        description: "Mail check request sent successfully",
+      });
+    }).catch((error) => {
+      console.error("Error sending webhook request:", error);
+      toast({
+        title: "Error",
+        description: "Failed to send request to webhook",
+        variant: "destructive",
+      });
+    });
+
+    // Navigate immediately for a faster user experience
+    navigate("/mails");
+  };
 
   const menuItems = [
     {
