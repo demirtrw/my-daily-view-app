@@ -53,6 +53,9 @@ const Settings = () => {
       title: checked ? "Crypto prices enabled" : "Crypto prices disabled",
       description: "Widget visibility updated",
     });
+    
+    // Trigger a custom event to notify other components
+    window.dispatchEvent(new CustomEvent('cryptoSettingChanged'));
   };
 
   const handleAssistantToggle = (checked: boolean) => {

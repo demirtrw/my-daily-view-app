@@ -5,10 +5,34 @@ import { useNavigate } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
 import { Button } from "@/components/ui/button";
 import AssistantFAB from "@/components/AssistantFAB";
+import CryptoPrices from "@/components/CryptoPrices";
+import { useState, useEffect } from "react";
 
 const MainMenu = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
+
+  // Load crypto prices setting
+  const [showCryptoPrices, setShowCryptoPrices] = useState(() => {
+    const saved = localStorage.getItem('showCryptoPrices');
+    return saved ? JSON.parse(saved) : false;
+  });
+
+  // Listen for setting changes
+  useEffect(() => {
+    const handleStorageChange = () => {
+      const saved = localStorage.getItem('showCryptoPrices');
+      setShowCryptoPrices(saved ? JSON.parse(saved) : false);
+    };
+
+    window.addEventListener('storage', handleStorageChange);
+    window.addEventListener('cryptoSettingChanged', handleStorageChange);
+
+    return () => {
+      window.removeEventListener('storage', handleStorageChange);
+      window.removeEventListener('cryptoSettingChanged', handleStorageChange);
+    };
+  }, []);
 
   const handleMailsClick = () => {
     console.log("Sending GET request to webhook...");
@@ -92,6 +116,13 @@ const MainMenu = () => {
             <Settings className="h-5 w-5 text-gray-600" />
           </Button>
         </div>
+
+        {/* Crypto Prices Section - conditionally shown */}
+        {showCryptoPrices && (
+          <div className="mb-6">
+            <CryptoPrices />
+          </div>
+        )}
 
         <div className="grid grid-cols-1 gap-4">
           {menuItems.map((item, index) => (
