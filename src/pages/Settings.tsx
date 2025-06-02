@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { ArrowLeft, Moon, Sun, DollarSign, Bot } from "lucide-react";
@@ -61,6 +60,9 @@ const Settings = () => {
       title: checked ? "AI Assistant enabled" : "AI Assistant disabled",
       description: "Button visibility updated",
     });
+    
+    // Trigger a custom event to notify the FAB component
+    window.dispatchEvent(new CustomEvent('assistantSettingChanged'));
   };
 
   return (

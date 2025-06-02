@@ -7,6 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Fingerprint, Shield } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
+import AssistantFAB from "@/components/AssistantFAB";
 
 const PinLogin = () => {
   const [pin, setPin] = useState("");
@@ -108,6 +109,8 @@ const PinLogin = () => {
           </CardContent>
         </Card>
       </div>
+      
+      <AssistantFAB />
     </div>
   );
 };

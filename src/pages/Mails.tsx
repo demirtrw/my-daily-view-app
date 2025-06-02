@@ -1,4 +1,3 @@
-
 import { ArrowLeft, Mail, Star, Paperclip, RefreshCw } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -8,6 +7,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { useToast } from "@/hooks/use-toast";
 import { useQuery } from "@tanstack/react-query";
 import { format } from "date-fns";
+import AssistantFAB from "@/components/AssistantFAB";
 
 interface EmailData {
   from: string;
@@ -213,6 +213,8 @@ const Mails = () => {
           </div>
         )}
       </div>
+      
+      <AssistantFAB />
     </div>
   );
 };

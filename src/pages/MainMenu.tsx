@@ -4,6 +4,7 @@ import { CreditCard, Calendar, Mail, MessageSquare, Settings } from "lucide-reac
 import { useNavigate } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
 import { Button } from "@/components/ui/button";
+import AssistantFAB from "@/components/AssistantFAB";
 
 const MainMenu = () => {
   const navigate = useNavigate();
@@ -118,6 +119,8 @@ const MainMenu = () => {
           ))}
         </div>
       </div>
+      
+      <AssistantFAB />
     </div>
   );
 };
