@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { ArrowLeft, Moon, Sun, DollarSign, Bot } from "lucide-react";
@@ -5,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
+import CryptoPrices from "@/components/CryptoPrices";
 
 const Settings = () => {
   const navigate = useNavigate();
@@ -67,7 +69,7 @@ const Settings = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-blue-50 dark:from-gray-900 dark:to-blue-900 p-4">
-      <div className="max-w-md mx-auto">
+      <div className="max-w-4xl mx-auto">
         {/* Header */}
         <div className="flex items-center mb-8 pt-8">
           <Button
@@ -81,80 +83,87 @@ const Settings = () => {
           <h1 className="text-3xl font-bold text-gray-800 dark:text-gray-100">Settings</h1>
         </div>
 
-        {/* Settings Options */}
-        <div className="space-y-4">
-          {/* Dark Mode */}
-          <Card className="border-0 shadow-lg dark:bg-gray-800">
-            <CardContent className="p-6">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center space-x-3">
-                  {darkMode ? (
-                    <Moon className="h-5 w-5 text-blue-600 dark:text-blue-400" />
-                  ) : (
-                    <Sun className="h-5 w-5 text-yellow-600" />
-                  )}
-                  <div>
-                    <h3 className="text-lg font-semibold text-gray-800 dark:text-gray-100">
-                      Dark Mode
-                    </h3>
-                    <p className="text-sm text-gray-600 dark:text-gray-300">
-                      Switch between light and dark themes
-                    </p>
-                  </div>
-                </div>
-                <Switch
-                  checked={darkMode}
-                  onCheckedChange={handleDarkModeToggle}
-                />
-              </div>
-            </CardContent>
-          </Card>
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          {/* Left Column - Crypto Prices */}
+          <div className="space-y-4">
+            <CryptoPrices />
+          </div>
 
-          {/* Crypto Prices */}
-          <Card className="border-0 shadow-lg dark:bg-gray-800">
-            <CardContent className="p-6">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center space-x-3">
-                  <DollarSign className="h-5 w-5 text-green-600 dark:text-green-400" />
-                  <div>
-                    <h3 className="text-lg font-semibold text-gray-800 dark:text-gray-100">
-                      Show Crypto Prices
-                    </h3>
-                    <p className="text-sm text-gray-600 dark:text-gray-300">
-                      Display crypto price widget on home screen
-                    </p>
+          {/* Right Column - Settings Options */}
+          <div className="space-y-4">
+            {/* Dark Mode */}
+            <Card className="border-0 shadow-lg dark:bg-gray-800">
+              <CardContent className="p-6">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center space-x-3">
+                    {darkMode ? (
+                      <Moon className="h-5 w-5 text-blue-600 dark:text-blue-400" />
+                    ) : (
+                      <Sun className="h-5 w-5 text-yellow-600" />
+                    )}
+                    <div>
+                      <h3 className="text-lg font-semibold text-gray-800 dark:text-gray-100">
+                        Dark Mode
+                      </h3>
+                      <p className="text-sm text-gray-600 dark:text-gray-300">
+                        Switch between light and dark themes
+                      </p>
+                    </div>
                   </div>
+                  <Switch
+                    checked={darkMode}
+                    onCheckedChange={handleDarkModeToggle}
+                  />
                 </div>
-                <Switch
-                  checked={showCryptoPrices}
-                  onCheckedChange={handleCryptoPricesToggle}
-                />
-              </div>
-            </CardContent>
-          </Card>
+              </CardContent>
+            </Card>
 
-          {/* AI Assistant */}
-          <Card className="border-0 shadow-lg dark:bg-gray-800">
-            <CardContent className="p-6">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center space-x-3">
-                  <Bot className="h-5 w-5 text-purple-600 dark:text-purple-400" />
-                  <div>
-                    <h3 className="text-lg font-semibold text-gray-800 dark:text-gray-100">
-                      Enable Assistant Button
-                    </h3>
-                    <p className="text-sm text-gray-600 dark:text-gray-300">
-                      Show AI Assistant button on all screens
-                    </p>
+            {/* Crypto Prices */}
+            <Card className="border-0 shadow-lg dark:bg-gray-800">
+              <CardContent className="p-6">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center space-x-3">
+                    <DollarSign className="h-5 w-5 text-green-600 dark:text-green-400" />
+                    <div>
+                      <h3 className="text-lg font-semibold text-gray-800 dark:text-gray-100">
+                        Show Crypto Prices
+                      </h3>
+                      <p className="text-sm text-gray-600 dark:text-gray-300">
+                        Display crypto price widget on home screen
+                      </p>
+                    </div>
                   </div>
+                  <Switch
+                    checked={showCryptoPrices}
+                    onCheckedChange={handleCryptoPricesToggle}
+                  />
                 </div>
-                <Switch
-                  checked={enableAssistant}
-                  onCheckedChange={handleAssistantToggle}
-                />
-              </div>
-            </CardContent>
-          </Card>
+              </CardContent>
+            </Card>
+
+            {/* AI Assistant */}
+            <Card className="border-0 shadow-lg dark:bg-gray-800">
+              <CardContent className="p-6">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center space-x-3">
+                    <Bot className="h-5 w-5 text-purple-600 dark:text-purple-400" />
+                    <div>
+                      <h3 className="text-lg font-semibold text-gray-800 dark:text-gray-100">
+                        Enable Assistant Button
+                      </h3>
+                      <p className="text-sm text-gray-600 dark:text-gray-300">
+                        Show AI Assistant button on all screens
+                      </p>
+                    </div>
+                  </div>
+                  <Switch
+                    checked={enableAssistant}
+                    onCheckedChange={handleAssistantToggle}
+                  />
+                </div>
+              </CardContent>
+            </Card>
+          </div>
         </div>
 
         {/* Footer info */}
